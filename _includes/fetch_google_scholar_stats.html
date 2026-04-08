@@ -61,7 +61,7 @@
                 });
 
                 publicationsContainer.innerHTML = '';
-                var ul = document.createElement('ul');
+                var ol = document.createElement('ol');
                 pubList.forEach(function (pub) {
                     var title = (pub.bib && pub.bib.title) ? pub.bib.title : '';
                     var year = (pub.bib && pub.bib.pub_year) ? pub.bib.pub_year : '';
@@ -107,9 +107,9 @@
                         li.appendChild(document.createTextNode(' | '));
                         li.appendChild(a);
                     }
-                    ul.appendChild(li);
+                    ol.appendChild(li);
                 });
-                publicationsContainer.appendChild(ul);
+                publicationsContainer.appendChild(ol);
             }
         });
     })
