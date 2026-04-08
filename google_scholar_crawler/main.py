@@ -29,7 +29,6 @@ for pub_id, pub in list(author['publications'].items()):
         filled_pub.pop('url_related_articles', None)
         filled_pub.pop('url_add_sclib', None)
         filled_pub.pop('url_scholarbib', None)
-        filled_pub.pop('eprint_url', None)
 
         filled_pub['bib'] = bib
         author['publications'][pub_id] = filled_pub

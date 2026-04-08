@@ -46,7 +46,7 @@
                     var conference = (pub.bib && pub.bib.conference) ? pub.bib.conference : '';
                     var venue = journal || conference;
                     var citations = (pub.num_citations !== undefined && pub.num_citations !== null) ? pub.num_citations : null;
-                    var link = pub.pub_url || pub.citedby_url || '';
+                    var link = (pub.eprint_url || pub.pub_url || pub.citedby_url || '');
 
                     var li = document.createElement('li');
                     if (title) li.appendChild(document.createTextNode(title));
