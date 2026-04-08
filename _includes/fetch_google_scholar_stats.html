@@ -41,12 +41,33 @@
                 pubList.forEach(function (pub) {
                     var title = (pub.bib && pub.bib.title) ? pub.bib.title : '';
                     var year = (pub.bib && pub.bib.pub_year) ? pub.bib.pub_year : '';
+                    var authors = (pub.bib && pub.bib.author) ? pub.bib.author : '';
+                    var journal = (pub.bib && pub.bib.journal) ? pub.bib.journal : '';
+                    var conference = (pub.bib && pub.bib.conference) ? pub.bib.conference : '';
+                    var venue = journal || conference;
                     var citations = (pub.num_citations !== undefined && pub.num_citations !== null) ? pub.num_citations : null;
+                    var link = pub.pub_url || pub.citedby_url || '';
 
                     var li = document.createElement('li');
                     if (title) li.appendChild(document.createTextNode(title));
                     if (year) li.appendChild(document.createTextNode(' (' + year + ')'));
+
+                    if (venue) li.appendChild(document.createTextNode(' — ' + venue));
+                    if (authors) li.appendChild(document.createTextNode(' | ' + authors));
+
                     if (citations !== null) li.appendChild(document.createTextNode(' | Citations: ' + citations));
+
+                    if (link) {
+                        var a = document.createElement('a');
+                        var href = link;
+                        if (href.startsWith('/')) href = 'https://scholar.google.com' + href;
+                        a.href = href;
+                        a.target = '_blank';
+                        a.rel = 'noopener noreferrer';
+                        a.textContent = ' | Link';
+                        li.appendChild(document.createTextNode(' '));
+                        li.appendChild(a);
+                    }
                     ul.appendChild(li);
                 });
                 publicationsContainer.appendChild(ul);
