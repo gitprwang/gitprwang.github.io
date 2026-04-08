@@ -21,6 +21,30 @@
             // This keeps `_pages/about.md` automatically updated without manual edits.
             var publicationsContainer = document.getElementById('publications-list');
             if (publicationsContainer && data['publications']) {
+                function renderAuthors(authorsRaw) {
+                    var raw = (authorsRaw || '').toString();
+                    if (!raw) return null;
+
+                    // Normalize separators: "and" / Chinese comma -> comma.
+                    raw = raw.replace(/\s+and\s+/g, ', ').replace(/，/g, ', ');
+                    var parts = raw.split(',').map(function (p) { return p.trim(); }).filter(Boolean);
+
+                    var frag = document.createDocumentFragment();
+                    parts.forEach(function (name, idx) {
+                        if (idx > 0) frag.appendChild(document.createTextNode(', '));
+
+                        if (name === 'Xu Wang' || name === '王旭') {
+                            var strong = document.createElement('strong');
+                            strong.textContent = name;
+                            frag.appendChild(strong);
+                        } else {
+                            frag.appendChild(document.createTextNode(name));
+                        }
+                    });
+
+                    return frag;
+                }
+
                 var publications = data['publications'];
                 var pubList = Object.keys(publications).map(function (id) {
                     return publications[id];
@@ -52,10 +76,25 @@
                     if (title) li.appendChild(document.createTextNode(title));
                     if (year) li.appendChild(document.createTextNode(' (' + year + ')'));
 
-                    if (venue) li.appendChild(document.createTextNode(' — ' + venue));
-                    if (authors) li.appendChild(document.createTextNode(' | ' + authors));
+                    if (venue) {
+                        li.appendChild(document.createTextNode(' — '));
+                        var venueStrong = document.createElement('strong');
+                        venueStrong.textContent = venue;
+                        li.appendChild(venueStrong);
+                    }
 
-                    if (citations !== null) li.appendChild(document.createTextNode(' | Citations: ' + citations));
+                    var authorsFrag = renderAuthors(authors);
+                    if (authorsFrag) {
+                        li.appendChild(document.createTextNode(' | '));
+                        li.appendChild(authorsFrag);
+                    }
+
+                    if (citations !== null) {
+                        li.appendChild(document.createTextNode(' | Citations: '));
+                        var citStrong = document.createElement('strong');
+                        citStrong.textContent = citations;
+                        li.appendChild(citStrong);
+                    }
 
                     if (link) {
                         var a = document.createElement('a');
@@ -64,8 +103,8 @@
                         a.href = href;
                         a.target = '_blank';
                         a.rel = 'noopener noreferrer';
-                        a.textContent = ' | Link';
-                        li.appendChild(document.createTextNode(' '));
+                        a.textContent = 'Link';
+                        li.appendChild(document.createTextNode(' | '));
                         li.appendChild(a);
                     }
                     ul.appendChild(li);

@@ -22,12 +22,14 @@ I am currently serving as an Associate Researcher at the Suzhou Institute for Ad
 I am actively seeking students who are passionate about the following areas: ***diffusion models***, ***molecular generation/design***, and ***specular analysis***. If you are interested in collaborating on these exciting topics, please do not hesitate to contact me at wx309@ustc.edu.cn.
 
 
+<!--
 <span class='anchor' id='-news'></span>
 
 # 🔥 News
 - *2025.3*: One paper accepted by ICDE'25.
 - *2025.1*: One paper accepted by ICLR'25.
 - *2024.10*: One paper accepted by AAAI'25.
+-->
 
 
 # 📝 Publications
