@@ -14,6 +14,41 @@
                 var numCitations = data['publications'][paperId]['num_citations']
                 element.innerHTML = '| Citations: ' + numCitations;
             });
+
+            // If the page has a publications placeholder, render the list from the Scholar JSON.
+            // This keeps `_pages/about.md` automatically updated without manual edits.
+            var publicationsContainer = document.getElementById('publications-list');
+            if (publicationsContainer && data['publications']) {
+                var publications = data['publications'];
+                var pubList = Object.keys(publications).map(function (id) {
+                    return publications[id];
+                });
+
+                pubList.sort(function (a, b) {
+                    var ay = parseInt((a.bib && a.bib.pub_year) ? a.bib.pub_year : '0', 10);
+                    var by = parseInt((b.bib && b.bib.pub_year) ? b.bib.pub_year : '0', 10);
+                    if (by !== ay) return by - ay; // Year desc
+
+                    var ac = (a.num_citations !== undefined && a.num_citations !== null) ? a.num_citations : 0;
+                    var bc = (b.num_citations !== undefined && b.num_citations !== null) ? b.num_citations : 0;
+                    return bc - ac; // Citations desc
+                });
+
+                publicationsContainer.innerHTML = '';
+                var ul = document.createElement('ul');
+                pubList.forEach(function (pub) {
+                    var title = (pub.bib && pub.bib.title) ? pub.bib.title : '';
+                    var year = (pub.bib && pub.bib.pub_year) ? pub.bib.pub_year : '';
+                    var citations = (pub.num_citations !== undefined && pub.num_citations !== null) ? pub.num_citations : null;
+
+                    var li = document.createElement('li');
+                    if (title) li.appendChild(document.createTextNode(title));
+                    if (year) li.appendChild(document.createTextNode(' (' + year + ')'));
+                    if (citations !== null) li.appendChild(document.createTextNode(' | Citations: ' + citations));
+                    ul.appendChild(li);
+                });
+                publicationsContainer.appendChild(ul);
+            }
         });
     })
 </script>
